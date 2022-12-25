@@ -39,13 +39,13 @@ fName.forEach((nm,ind) => {
   
 })
 //f2 = "KAKA-New-Punjabi-Song---Mitti-De-Tibbe"
-fs.appendFile("music/"+f2+".mp3", '', function (err) {
+fs.appendFile(f2+".mp3", '', function (err) {
   if (err) throw err;
   console.log('File is created successfully.');
 });
-stream.pipe(fs.createWriteStream("music/"+f2+".mp3"));
+stream.pipe(fs.createWriteStream(f2+".mp3"));
 stream.on('end', () => {
-  const file = `${__dirname}/music/${f2}.mp3`;
+  const file = `${__dirname}/${f2}.mp3`;
   setTimeout(function(){
     fs.unlink(file, function (err) {
       if (err) throw err;
