@@ -47,13 +47,16 @@ fs.appendFile("/tmp/"+f2+".mp3", '', function (err) {
 });
 //stream.pipe(fs.createWriteStream("/tmp/"+f2+".mp3"));
 
-async function uploadReadableStream(stream) {
+
+stream.on('end', () => {
+  const file = `${__dirname}/tmp/${f2}.mp3`;
+  async function uploadReadableStream(stream) {
   const params = {Bucket: "cyclic-wild-pear-sea-lion-cape-ap-southeast-2", Key: f2+".mp3", Body: stream};
   return s3.upload(params).promise();
 }
 
 async function upload() {
-  const readable = stream.pipe(fs.createWriteStream("/tmp/"+f2+".mp3"));
+  const readable = fs.createReadStream("/tmp/"+f2+".mp3");
   const results = await uploadReadableStream(readable);
   let my_file = await s3.getObject({
                 Bucket: "cyclic-wild-pear-sea-lion-cape-ap-southeast-2",
@@ -63,15 +66,6 @@ async function upload() {
             
   console.log('upload complete', results);
 }
-stream.on('end', () => {
-  const file = `${__dirname}/tmp/${f2}.mp3`;
-  /*setTimeout(function(){
-    fs.unlink(file, function (err) {
-      if (err) throw err;
-      // if no error, file has been deleted successfully
-      console.log('File deleted!');
-  });
-  },180000)*/
   
 });
 stream.on('error', function(e) { console.error(e); });
