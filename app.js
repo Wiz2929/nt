@@ -4,6 +4,8 @@ const express = require('express')
 const cors = require("cors")
 const app = express()
 const port = 3300
+const AWS = require("aws-sdk");
+const s3 = new AWS.S3()
 app.use(cors())
 
 app.get('/', (req, res) => {
