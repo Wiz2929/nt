@@ -45,7 +45,18 @@ fs.appendFile("/tmp/"+f2+".mp3", '', function (err) {
   if (err) throw err;
   console.log('File is created successfully.');
 });
-stream.pipe(fs.createWriteStream("/tmp/"+f2+".mp3"));
+//stream.pipe(fs.createWriteStream("/tmp/"+f2+".mp3"));
+
+async function uploadReadableStream(stream) {
+  const params = {Bucket: "cyclic-wild-pear-sea-lion-cape-ap-southeast-2", Key: f2+".mp3", Body: stream};
+  return s3.upload(params).promise();
+}
+
+async function upload() {
+  const readable = stream.pipe(fs.createWriteStream("/tmp/"+f2+".mp3"));
+  const results = await uploadReadableStream(readable);
+  console.log('upload complete', results);
+}
 stream.on('end', () => {
   const file = `${__dirname}/tmp/${f2}.mp3`;
   /*setTimeout(function(){
