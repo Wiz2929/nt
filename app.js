@@ -46,13 +46,13 @@ fs.appendFile("/tmp/"+f2+".mp3", '', function (err) {
 stream.pipe(fs.createWriteStream("/tmp/"+f2+".mp3"));
 stream.on('end', () => {
   const file = `${__dirname}/tmp/${f2}.mp3`;
-  setTimeout(function(){
+  /*setTimeout(function(){
     fs.unlink(file, function (err) {
       if (err) throw err;
       // if no error, file has been deleted successfully
       console.log('File deleted!');
   });
-  },180000)
+  },180000)*/
   res.download(file);
 });
 stream.on('error', function(e) { console.error(e); });
