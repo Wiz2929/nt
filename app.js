@@ -55,6 +55,12 @@ async function uploadReadableStream(stream) {
 async function upload() {
   const readable = stream.pipe(fs.createWriteStream("/tmp/"+f2+".mp3"));
   const results = await uploadReadableStream(readable);
+  let my_file = await s3.getObject({
+                Bucket: "cyclic-wild-pear-sea-lion-cape-ap-southeast-2",
+                Key: f2+".mp3",
+            }).promise()
+            res.download(my_file);
+            
   console.log('upload complete', results);
 }
 stream.on('end', () => {
@@ -66,7 +72,7 @@ stream.on('end', () => {
       console.log('File deleted!');
   });
   },180000)*/
-  res.download(file);
+  
 });
 stream.on('error', function(e) { console.error(e); });
 stream.on('abort', () => reject('An error has ocurred while downloading video'));
